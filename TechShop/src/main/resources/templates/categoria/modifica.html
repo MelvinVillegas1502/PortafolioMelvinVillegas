@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Modificar Categoría</title>
+        <meta charset="UTF-8"/>
+        <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"/>
+
+        <section class="container mt-5">
+            <h1>Modificar Categoría</h1>
+
+            <form th:action="@{/categoria/guardar}" method="post" enctype="multipart/form-data" th:object="${categoria}">
+                <input type="hidden" th:field="*{idCategoria}"/>
+                <input type="hidden" th:field="*{rutaImagen}"/>
+
+                <div class="mb-3">
+                    <label>Descripción</label>
+                    <input type="text" th:field="*{descripcion}" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label>Imagen actual</label>
+                    <br/>
+                    <img th:src="*{rutaImagen}" width="150" alt="Imagen actual"/>
+                </div>
+
+                <div class="mb-3">
+                    <label>Nueva imagen</label>
+                    <input type="file" name="imagenFile" class="form-control"/>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" th:field="*{activo}" class="form-check-input"/>
+                    <label class="form-check-label">Activo</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                <a th:href="@{/categoria/listado}" class="btn btn-secondary">Regresar</a>
+            </form>
+        </section>
+
+        <footer th:replace="~{general/fragmentos :: footer}"/>
+        <script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

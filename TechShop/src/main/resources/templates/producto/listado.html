@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Listado de Productos</title>
+        <meta charset="UTF-8"/>
+        <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"/>
+
+        <section class="container mt-5">
+            <h1>Listado de Productos</h1>
+
+            <p>
+                Total de productos:
+                <span th:text="${totalProductos}">0</span>
+            </p>
+
+            <hr/>
+
+            <h3>Agregar producto</h3>
+
+            <form th:action="@{/producto/guardar}" method="post" enctype="multipart/form-data" class="mb-5">
+                <div class="mb-3">
+                    <label>Categoría</label>
+                    <select name="categoria.idCategoria" class="form-control" required>
+                        <option value="">Seleccione una categoría</option>
+                        <option th:each="c : ${categorias}"
+                                th:value="${c.idCategoria}"
+                                th:text="${c.descripcion}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Descripción</label>
+                    <input type="text" name="descripcion" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label>Detalle</label>
+                    <textarea name="detalle" class="form-control"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label>Precio</label>
+                    <input type="number" step="0.01" name="precio" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label>Existencias</label>
+                    <input type="number" name="existencias" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label>Imagen</label>
+                    <input type="file" name="imagenFile" class="form-control"/>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="activo" class="form-check-input" checked/>
+                    <label class="form-check-label">Activo</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Existencias</th>
+                        <th>Categoría</th>
+                        <th>Imagen</th>
+                        <th>Activo</th>
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="p : ${productos}">
+                        <td th:text="${p.idProducto}">1</td>
+                        <td th:text="${p.descripcion}">Producto</td>
+                        <td th:text="${p.precio}">0</td>
+                        <td th:text="${p.existencias}">0</td>
+                        <td th:text="${p.categoria != null ? p.categoria.descripcion : 'Sin categoría'}">Categoría</td>
+
+                        <td>
+                            <img th:src="${p.rutaImagen}" width="100" alt="Imagen producto"/>
+                        </td>
+
+                        <td th:text="${p.activo}">true</td>
+
+                        <td>
+                            <a th:href="@{/producto/modificar/{id}(id=${p.idProducto})}" class="btn btn-warning">
+                                Modificar
+                            </a>
+                        </td>
+
+                        <td>
+                            <form th:action="@{/producto/eliminar}" method="post">
+                                <input type="hidden" name="idProducto" th:value="${p.idProducto}"/>
+                                <button type="submit" class="btn btn-danger">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer th:replace="~{general/fragmentos :: footer}"/>
+        <script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

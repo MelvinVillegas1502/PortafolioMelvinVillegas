@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Listado de Categorías</title>
+        <meta charset="UTF-8"/>
+        <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"/>
+
+        <section class="container mt-5">
+            <h1>Listado de Categorías</h1>
+
+            <p>
+                Total de categorías:
+                <span th:text="${totalCategorias}">0</span>
+            </p>
+
+            <hr/>
+
+            <h3>Agregar categoría</h3>
+
+            <form th:action="@{/categoria/guardar}" method="post" enctype="multipart/form-data" class="mb-5">
+                <div class="mb-3">
+                    <label>Descripción</label>
+                    <input type="text" name="descripcion" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label>Imagen</label>
+                    <input type="file" name="imagenFile" class="form-control"/>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="activo" class="form-check-input" checked/>
+                    <label class="form-check-label">Activo</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Imagen</th>
+                        <th>Activo</th>
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="categoria : ${categorias}">
+                        <td th:text="${categoria.idCategoria}">1</td>
+                        <td th:text="${categoria.descripcion}">Descripción</td>
+
+                        <td>
+                            <img th:src="${categoria.rutaImagen}" width="100" alt="Imagen categoría"/>
+                        </td>
+
+                        <td th:text="${categoria.activo}">true</td>
+
+                        <td>
+                            <a th:href="@{/categoria/modificar/} + ${categoria.idCategoria}" class="btn btn-warning">
+                                Modificar
+                            </a>
+                        </td>
+
+                        <td>
+                            <form th:action="@{/categoria/eliminar}" method="post">
+                                <input type="hidden" name="idCategoria" th:value="${categoria.idCategoria}"/>
+                                <button type="submit" class="btn btn-danger">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer th:replace="~{general/fragmentos :: footer}"/>
+        <script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
