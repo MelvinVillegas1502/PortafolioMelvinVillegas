@@ -39,19 +39,33 @@
                 <ul class="navbar-nav me-auto">
 
                     <li class="nav-item px-2">
-                        <a class="nav-link" th:href="@{/}">Inicio</a>
+                        <a class="nav-link" th:href="@{/}">
+                            Inicio
+                        </a>
                     </li>
 
                     <li class="nav-item px-2">
-                        <a class="nav-link" th:href="@{/categoria/listado}">Categorías</a>
+                        <a class="nav-link" th:href="@{/categoria/listado}">
+                            Categorías
+                        </a>
                     </li>
 
                     <li class="nav-item px-2">
-                        <a class="nav-link" th:href="@{/producto/listado}">Productos</a>
+                        <a class="nav-link" th:href="@{/producto/listado}">
+                            Productos
+                        </a>
                     </li>
 
                     <li class="nav-item px-2">
-                        <a class="nav-link" th:href="@{/consultas/listado}">Consultas</a>
+                        <a class="nav-link" th:href="@{/consultas/listado}">
+                            Consultas
+                        </a>
+                    </li>
+
+                    <li class="nav-item px-2" sec:authorize="hasAnyRole('USUARIO','ADMIN')">
+                        <a class="nav-link" th:href="@{/carrito/listado}">
+                            <i class="fas fa-cart-shopping"></i> Carrito
+                        </a>
                     </li>
 
                     <li class="nav-item dropdown px-2" sec:authorize="hasRole('ADMIN')">

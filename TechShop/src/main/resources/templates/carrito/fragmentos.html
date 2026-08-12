@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<section th:fragment="listadoCarrito" class="container my-4">
+    <h1>Carrito de compras</h1>
+
+    <p th:if="${todoOk}" th:text="${todoOk}" class="alert alert-success"></p>
+    <p th:if="${error}" th:text="${error}" class="alert alert-danger"></p>
+
+    <div th:if="${carritoItems != null and !carritoItems.empty}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Modificar</th>
+                <th>Eliminar</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="item : ${carritoItems}">
+                <td th:text="${item.producto.idProducto}"></td>
+                <td th:text="${item.producto.descripcion}"></td>
+                <td th:text="${#numbers.formatCurrency(item.precioHistorico)}"></td>
+                <td th:text="${item.cantidad}"></td>
+                <td th:text="${#numbers.formatCurrency(item.subTotal)}"></td>
+
+                <td>
+                    <a class="btn btn-warning btn-sm"
+                       th:href="@{/carrito/modificar/} + ${item.producto.idProducto}">
+                        Modificar
+                    </a>
+                </td>
+
+                <td>
+                    <form th:action="@{/carrito/eliminar/} + ${item.producto.idProducto}" method="post">
+                        <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="card p-3">
+            <h3>Total: <span th:text="${#numbers.formatCurrency(totalCarrito)}"></span></h3>
+
+            <a class="btn btn-primary my-2" th:href="@{/producto/listado}">
+                Seguir comprando
+            </a>
+
+            <a class="btn btn-success my-2" th:href="@{/facturar/carrito}">
+                Facturar carrito
+            </a>
+        </div>
+    </div>
+
+    <div th:if="${carritoItems == null or carritoItems.empty}" class="alert alert-info">
+        El carrito está vacío.
+        <a th:href="@{/producto/listado}">Volver a productos</a>
+    </div>
+</section>
+
+<section th:fragment="modificaItem" class="container my-4">
+    <h1>Modificar producto del carrito</h1>
+
+    <form th:action="@{/carrito/actualizar}" th:object="${item}" method="post">
+        <input type="hidden" name="producto.idProducto" th:value="${item.producto.idProducto}"/>
+
+        <div class="card p-3">
+            <h4 th:text="${item.producto.descripcion}"></h4>
+            <p th:text="${item.producto.detalle}"></p>
+            <p>Precio: <strong th:text="${#numbers.formatCurrency(item.precioHistorico)}"></strong></p>
+
+            <label>Cantidad</label>
+            <input class="form-control mb-3"
+                   type="number"
+                   name="cantidad"
+                   min="1"
+                   th:max="${item.producto.existencias}"
+                   th:value="${item.cantidad}"
+                   required/>
+
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <a class="btn btn-secondary" th:href="@{/carrito/listado}">Regresar</a>
+        </div>
+    </form>
+</section>
+
+<section th:fragment="detalleFactura" class="container my-4">
+    <h1>Factura</h1>
+
+    <p th:if="${mensaje}" th:text="${mensaje}" class="alert alert-success"></p>
+
+    <div class="card p-3">
+        <p><strong>Factura #:</strong> <span th:text="${factura.idFactura}"></span></p>
+        <p><strong>Fecha:</strong> <span th:text="${#temporals.format(factura.fecha, 'dd-MM-yyyy HH:mm')}"></span></p>
+        <p><strong>Estado:</strong> <span th:text="${factura.estado.valorBD}"></span></p>
+        <p><strong>Cliente:</strong> <span th:text="${factura.usuario.nombre + ' ' + factura.usuario.apellidos}"></span></p>
+    </div>
+
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="venta : ${factura.ventas}">
+            <td th:text="${venta.producto.descripcion}"></td>
+            <td th:text="${venta.cantidad}"></td>
+            <td th:text="${#numbers.formatCurrency(venta.precioHistorico)}"></td>
+            <td th:text="${#numbers.formatCurrency(venta.precioHistorico * venta.cantidad)}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Total: <span th:text="${#numbers.formatCurrency(factura.total)}"></span></h3>
+
+    <a class="btn btn-primary" th:href="@{/}">Volver al inicio</a>
+</section>
+
+</body>
+</html>

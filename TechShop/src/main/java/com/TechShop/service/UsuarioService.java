@@ -107,4 +107,8 @@ public class UsuarioService {
 
         usuarioRepository.delete(usuario);
     }
+    @Transactional(readOnly = true)
+public Optional<Usuario> getUsuarioPorUsername(String username) {
+    return usuarioRepository.findByUsernameAndActivoTrue(username);
+}
 }
