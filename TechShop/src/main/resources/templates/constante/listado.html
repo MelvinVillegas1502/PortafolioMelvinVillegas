@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="~{general/fragmentos :: head}"/>
+<body>
+<header th:replace="~{general/fragmentos :: header}"/>
+
+<section class="container my-4">
+    <h1>Constantes del sistema</h1>
+
+    <p th:if="${todoOk}" th:text="${todoOk}" class="alert alert-success"></p>
+    <p th:if="${error}" th:text="${error}" class="alert alert-danger"></p>
+
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#agregarConstanteModal">
+        Agregar constante
+    </button>
+
+    <div class="row">
+        <div class="col-md-9">
+            <table class="table table-striped table-hover" th:if="${constantes != null and !constantes.empty}">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Atributo</th>
+                    <th>Valor</th>
+                    <th>Modificar</th>
+                    <th>Eliminar</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="c : ${constantes}">
+                    <td th:text="${c.idConstante}"></td>
+                    <td th:text="${c.atributo}"></td>
+                    <td th:text="${c.valor}"></td>
+                    <td>
+                        <a class="btn btn-warning btn-sm"
+                           th:href="@{'/constante/modificar/' + ${c.idConstante}}">
+                            Modificar
+                        </a>
+                    </td>
+                    <td>
+                        <form th:action="@{/constante/eliminar}" method="post">
+                            <input type="hidden" name="idConstante" th:value="${c.idConstante}"/>
+                            <button class="btn btn-danger btn-sm" type="submit">
+                                Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${constantes == null or constantes.empty}" class="alert alert-info">
+                No hay constantes registradas.
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white text-center">
+                <div class="card-body">
+                    <h4>Total constantes</h4>
+                    <h2 th:text="${totalConstantes}"></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="agregarConstanteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form th:action="@{/constante/guardar}" th:object="${constante}" method="post">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">Agregar constante</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <label>Atributo</label>
+                    <input class="form-control mb-2" type="text" th:field="*{atributo}" required/>
+
+                    <label>Valor</label>
+                    <input class="form-control mb-2" type="text" th:field="*{valor}" required/>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="submit">Guardar</button>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{general/fragmentos :: footer}"/>
+</body>
+</html>
