@@ -14,7 +14,7 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
 
-    <!-- CSS propio si existe -->
+    <!-- CSS propio -->
     <link th:href="@{/css/estilos.css}" rel="stylesheet" />
 </head>
 
@@ -61,6 +61,7 @@
                         </a>
 
                         <ul class="dropdown-menu">
+
                             <li>
                                 <a class="dropdown-item" th:href="@{/producto/listado}">
                                     Productos
@@ -72,6 +73,13 @@
                                     Categorías
                                 </a>
                             </li>
+
+                            <li>
+                                <a class="dropdown-item" th:href="@{/usuario/listado}">
+                                    Usuarios
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="~{general/fragmentos :: head}"/>
+<body>
+<header th:replace="~{general/fragmentos :: header}"/>
+
+<section class="container my-4">
+    <h1>Modificar usuario</h1>
+
+    <form th:action="@{/usuario/guardar}" th:object="${usuario}" method="post">
+        <input type="hidden" th:field="*{idUsuario}"/>
+
+        <label>Username</label>
+        <input class="form-control mb-2" type="text" th:field="*{username}" required/>
+
+        <label>Password nueva</label>
+        <input class="form-control mb-2" type="password" th:field="*{password}"
+               placeholder="Dejar vacío si no desea cambiarla"/>
+
+        <label>Nombre</label>
+        <input class="form-control mb-2" type="text" th:field="*{nombre}" required/>
+
+        <label>Apellidos</label>
+        <input class="form-control mb-2" type="text" th:field="*{apellidos}" required/>
+
+        <label>Correo</label>
+        <input class="form-control mb-2" type="email" th:field="*{correo}" required/>
+
+        <label>Teléfono</label>
+        <input class="form-control mb-2" type="text" th:field="*{telefono}"/>
+
+        <label>Ruta imagen</label>
+        <input class="form-control mb-2" type="text" th:field="*{rutaImagen}"/>
+
+        <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" th:field="*{activo}"/>
+            <label class="form-check-label">Activo</label>
+        </div>
+
+        <div class="mt-3">
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <a class="btn btn-secondary" th:href="@{/usuario/listado}">Regresar</a>
+        </div>
+    </form>
+</section>
+
+<footer th:replace="~{general/fragmentos :: footer}"/>
+</body>
+</html>
