@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}"/>
+<body>
+<header th:replace="~{general/fragmentos :: header}"/>
+
+<section class="container my-5">
+    <div class="alert alert-danger text-center">
+        <h1>Acceso denegado</h1>
+        <p>No tiene permisos para ingresar a esta sección.</p>
+        <a th:href="@{/}" class="btn btn-primary">Volver al inicio</a>
+    </div>
+</section>
+
+<footer th:replace="~{general/fragmentos :: footer}"/>
+</body>
+</html>

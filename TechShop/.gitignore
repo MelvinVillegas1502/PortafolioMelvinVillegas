@@ -31,12 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-target/
-nbproject/private/
-*.log
-
-# Firebase / Google Cloud keys
-TechShop/src/main/resources/firebase/*.json
-**/*firebase-adminsdk*.json
-**/firebase/*.json
